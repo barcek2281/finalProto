@@ -10,11 +10,13 @@ service Auth {
     rpc IsAdmin(IsAdminRequest) returns (IsAdminResponse);
     rpc LoginAdmin(LoginRequest) returns (LoginResponse);
     rpc RegisterAdmin(RegisterRequest) returns (RegisterResponse);
-}
+    rpc GetInfoUser(UserInfoRequest) returns (UserInfoResponse);
+} 
 
 message RegisterRequest {
     string email = 1;
-    string password = 2;
+    string username = 2;
+    string password = 3;
 }
   
 message RegisterResponse {
@@ -40,3 +42,13 @@ message IsAdminResponse {
     bool isAdmin = 1;
 }
 
+// -------- GET INFO USER -------
+
+message UserInfoRequest{
+    string userId = 1;
+}
+
+message UserInfoResponse {
+    string username = 1;
+    string email = 2;
+}
