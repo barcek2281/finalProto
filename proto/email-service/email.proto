@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package email;
 
-option go_package = "github.com/barcek2281/finalProto/gen/go/email";
+option go_package = "barcek2281.email.v1;emailv1";
 
 service EmailService {
   rpc NotifyComicUploaded (NotifyComicUploadedRequest) returns (NotifyComicUploadedResponse);
