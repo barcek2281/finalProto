@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package email;
+
+option go_package = "github.com/barcek2281/finalProto/gen/go/email";
+
+service EmailService {
+  rpc NotifyComicUploaded (NotifyComicUploadedRequest) returns (NotifyComicUploadedResponse);
+}
+
+message NotifyComicUploadedRequest {
+  string comic_id = 1;
+  string title = 2;
+  string author = 3;
+  string description = 4;
+}
+
+message NotifyComicUploadedResponse {
+  string message = 1;
+}
