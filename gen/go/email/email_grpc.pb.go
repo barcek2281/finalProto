@@ -19,7 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	EmailService_NotifyComicUploaded_FullMethodName = "/email.EmailService/NotifyComicUploaded"
+	EmailService_NotifyComicUploaded_FullMethodName  = "/email.EmailService/NotifyComicUploaded"
+	EmailService_NotifyChapterUpdated_FullMethodName = "/email.EmailService/NotifyChapterUpdated"
 )
 
 // EmailServiceClient is the client API for EmailService service.
@@ -27,6 +28,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type EmailServiceClient interface {
 	NotifyComicUploaded(ctx context.Context, in *NotifyComicUploadedRequest, opts ...grpc.CallOption) (*NotifyComicUploadedResponse, error)
+	NotifyChapterUpdated(ctx context.Context, in *NotifyChapterUpdatedRequest, opts ...grpc.CallOption) (*NotifyChapterUpdatedResponse, error)
 }
 
 type emailServiceClient struct {
@@ -47,11 +49,22 @@ func (c *emailServiceClient) NotifyComicUploaded(ctx context.Context, in *Notify
 	return out, nil
 }
 
+func (c *emailServiceClient) NotifyChapterUpdated(ctx context.Context, in *NotifyChapterUpdatedRequest, opts ...grpc.CallOption) (*NotifyChapterUpdatedResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(NotifyChapterUpdatedResponse)
+	err := c.cc.Invoke(ctx, EmailService_NotifyChapterUpdated_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // EmailServiceServer is the server API for EmailService service.
 // All implementations must embed UnimplementedEmailServiceServer
 // for forward compatibility.
 type EmailServiceServer interface {
 	NotifyComicUploaded(context.Context, *NotifyComicUploadedRequest) (*NotifyComicUploadedResponse, error)
+	NotifyChapterUpdated(context.Context, *NotifyChapterUpdatedRequest) (*NotifyChapterUpdatedResponse, error)
 	mustEmbedUnimplementedEmailServiceServer()
 }
 
@@ -64,6 +77,9 @@ type UnimplementedEmailServiceServer struct{}
 
 func (UnimplementedEmailServiceServer) NotifyComicUploaded(context.Context, *NotifyComicUploadedRequest) (*NotifyComicUploadedResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method NotifyComicUploaded not implemented")
+}
+func (UnimplementedEmailServiceServer) NotifyChapterUpdated(context.Context, *NotifyChapterUpdatedRequest) (*NotifyChapterUpdatedResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method NotifyChapterUpdated not implemented")
 }
 func (UnimplementedEmailServiceServer) mustEmbedUnimplementedEmailServiceServer() {}
 func (UnimplementedEmailServiceServer) testEmbeddedByValue()                      {}
@@ -104,6 +120,24 @@ func _EmailService_NotifyComicUploaded_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _EmailService_NotifyChapterUpdated_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(NotifyChapterUpdatedRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EmailServiceServer).NotifyChapterUpdated(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EmailService_NotifyChapterUpdated_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EmailServiceServer).NotifyChapterUpdated(ctx, req.(*NotifyChapterUpdatedRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // EmailService_ServiceDesc is the grpc.ServiceDesc for EmailService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -114,6 +148,10 @@ var EmailService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "NotifyComicUploaded",
 			Handler:    _EmailService_NotifyComicUploaded_Handler,
+		},
+		{
+			MethodName: "NotifyChapterUpdated",
+			Handler:    _EmailService_NotifyChapterUpdated_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

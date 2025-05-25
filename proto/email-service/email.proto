@@ -5,7 +5,8 @@ package email;
 option go_package = "barcek2281.email.v1;emailv1";
 
 service EmailService {
-  rpc NotifyComicUploaded (NotifyComicUploadedRequest) returns (NotifyComicUploadedResponse);
+  rpc NotifyComicUploaded(NotifyComicUploadedRequest) returns (NotifyComicUploadedResponse);
+  rpc NotifyChapterUpdated(NotifyChapterUpdatedRequest) returns (NotifyChapterUpdatedResponse);
 }
 
 message NotifyComicUploadedRequest {
@@ -16,5 +17,16 @@ message NotifyComicUploadedRequest {
 }
 
 message NotifyComicUploadedResponse {
+  string message = 1;
+}
+
+message NotifyChapterUpdatedRequest {
+  string chapter_id = 1;
+  string comic_id = 2;
+  string title = 3;
+  double number = 4;
+}
+
+message NotifyChapterUpdatedResponse {
   string message = 1;
 }
